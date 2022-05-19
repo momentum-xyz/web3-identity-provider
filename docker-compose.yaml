@@ -1,0 +1,67 @@
+version: "3"
+
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    volumes:
+      - "./scripts/mysql/:/docker-entrypoint-initdb.d"
+    ports:
+      - 3306:3306
+  hydra-migrate:
+    image: oryd/hydra:v1.10.6-sqlite
+    restart: on-failure
+    environment:
+      - DSN=mysql://root@tcp(db:3306)/hydra_dev?interpolateParams=true&parseTime=true
+    depends_on:
+      db:
+        condition: service_started
+    volumes:
+      - ./hydra.yaml:/etc/config/hydra/hydra.yaml:ro
+      - ./scripts/hydra:/scripts/hydra:ro
+    entrypoint: ""
+    command: [ "sh", "-c", "/scripts/hydra/migrate.sh" ]
+  hydra-create-client-creds:
+    image: oryd/hydra:v1.10.6-sqlite
+    restart: on-failure
+    environment:
+      - DSN=mysql://root@tcp(db:3306)/hydra_dev?interpolateParams=true&parseTime=true
+    depends_on:
+      hydra:
+        condition: service_started
+    volumes:
+      - ./hydra.yaml:/etc/config/hydra/hydra.yaml:ro
+      - ./scripts/hydra:/scripts/hydra:ro
+    entrypoint: ""
+    command: [ "sh", "-c", "/scripts/hydra/create-client-creds.sh" ]
+  hydra:
+    image: oryd/hydra:v1.10.6-sqlite
+    restart: unless-stopped
+    ports:
+      - "4444:4444" # Public port
+      - "4445:4445" # Admin port
+    depends_on:
+      hydra-migrate:
+        condition: service_completed_successfully
+    environment:
+      - DSN=mysql://root@tcp(db:3306)/hydra_dev?interpolateParams=true&parseTime=true
+      - SERVE_PUBLIC_CORS_ENABLED=true
+      - SERVE_PUBLIC_CORS_ALLOWED_ORIGINS=*
+      - CORS_ALLOWED_ORIGINS=*
+      - SERVE_PUBLIC_CORS_ALLOWED_METHODS=POST,GET,PUT,DELETE
+    volumes:
+      - ./hydra.yaml:/etc/config/hydra/hydra.yaml:ro
+    command: serve -c /etc/config/hydra/hydra.yaml all --dangerous-force-http
+  hydra-client:
+    image: oryd/hydra:v1.10.6-sqlite
+    restart: unless-stopped
+    ports:
+      - "5555:5555" # Port for hydra token user
+    depends_on:
+      - hydra
+    command: token user --client-id auth-code-client --no-shutdown
+      --token-url=http://hydra:4444/oauth2/token --client-secret secret
+      --endpoint http://localhost:4444/ --port 5555 --scope openid,offline

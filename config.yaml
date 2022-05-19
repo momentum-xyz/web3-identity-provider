@@ -1,0 +1,11 @@
+mysql:
+  database: web3_idp_dev
+  url: localhost
+  port: 3306
+  username: root
+  migrate: true
+settings:
+  loglevel: 1
+  url: 0.0.0.0:4000
+hydra:
+  adminURL: http://localhost:4445
