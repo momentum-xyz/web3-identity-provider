@@ -44,21 +44,16 @@ require (
 	github.com/gtank/merlin v0.1.1-0.20191105220539-8318aed1a79f // indirect
 	github.com/gtank/ristretto255 v0.1.2 // indirect
 	github.com/hashicorp/hcl/v2 v2.13.0 // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
-	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/mimoo/StrobeGo v0.0.0-20181016162300-f8f6d4d2b643 // indirect
 	github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/oklog/ulid v1.3.1 // indirect
-	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
-	github.com/spf13/cobra v1.5.0 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/zclconf/go-cty v1.8.0 // indirect
 	go.mongodb.org/mongo-driver v1.5.1 // indirect
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90 // indirect
@@ -66,5 +61,4 @@ require (
 	golang.org/x/net v0.0.0-20220722155237-a158d28d115b // indirect
 	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
 	golang.org/x/text v0.3.7 // indirect
-	golang.org/x/tools v0.1.13-0.20220804200503-81c7dc4e4efa // indirect
 )
