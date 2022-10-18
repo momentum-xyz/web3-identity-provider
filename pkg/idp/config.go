@@ -5,8 +5,8 @@ import (
 	"io"
 	"os"
 
+	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/database"
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/log"
-	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/mysql"
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/web3oidc/hydra"
 
 	"github.com/kelseyhightower/envconfig"
@@ -27,13 +27,13 @@ func (x *LocalConfig) Init() {
 
 // Config : structure to hold configuration
 type Config struct {
-	MySQL    mysql.Config `yaml:"mysql"`
-	Hydra    hydra.Config `yaml:"hydra"`
-	Settings LocalConfig  `yaml:"settings"`
+	Database database.Config `yaml:"database"`
+	Hydra    hydra.Config    `yaml:"hydra"`
+	Settings LocalConfig     `yaml:"settings"`
 }
 
 func (x *Config) Init() {
-	x.MySQL.Init()
+	x.Database.Init()
 }
 
 func (cfg *Config) defConfig() {

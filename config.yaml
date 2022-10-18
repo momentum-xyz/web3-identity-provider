@@ -1,8 +1,9 @@
-mysql:
+database:
   database: web3_idp_dev
   url: localhost
-  port: 3306
-  username: root
+  port: 54321
+  username: postgres
+  password: pw
   migrate: true
 settings:
   loglevel: 1
