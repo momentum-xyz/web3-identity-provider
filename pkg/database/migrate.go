@@ -1,4 +1,4 @@
-package mysql
+package database
 
 import (
 	"context"
@@ -11,9 +11,9 @@ import (
 	"github.com/pkg/errors"
 )
 
-func Migrate(db *sql.DB) error {
+func Migrate(db *sql.DB, cfg *Config) error {
 	log.Logln(0, "Migrating the database...")
-	ent := ent.NewClient(ent.Driver(entsql.OpenDB("mysql", db)))
+	ent := ent.NewClient(ent.Driver(entsql.OpenDB(cfg.Dialect, db)))
 	err := ent.Schema.Create(context.Background())
 
 	if err != nil {

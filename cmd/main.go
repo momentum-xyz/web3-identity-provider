@@ -3,9 +3,9 @@ package main
 import (
 	"net/http"
 
+	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/database"
 	web3idp "github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/idp"
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/log"
-	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/mysql"
 
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/web3oidc"
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/web3oidc/hydra"
@@ -16,7 +16,7 @@ const configFileName = "config.yaml"
 func main() {
 	cfg := web3idp.GetConfig(configFileName, true)
 	cfg.PrettyPrint()
-	db, cleanupDB, err := mysql.NewDB(&cfg.MySQL)
+	db, cleanupDB, err := database.NewDB(&cfg.Database)
 	if err != nil {
 		panic(err)
 	}
