@@ -13,6 +13,7 @@ import (
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/ent/web3user"
 
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/database"
+	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/log"
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/xhttp"
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/xorm"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -138,9 +139,10 @@ func (h *Handler) Handle() *chi.Mux {
 			SetLoginChallenge(challenge).
 			SetWeb3User(w3u).
 			SetWeb3Challenge(web3Challenge).
-			OnConflict().UpdateNewValues().
+			OnConflictColumns(web3challenge.FieldUUID).UpdateNewValues().
 			Exec(context.Background())
 		if xhttp.Error(w, err, 500) {
+			log.Logln(0, "Error creating web3Challenge entry.")
 			return
 		}
 
@@ -298,8 +300,14 @@ func (h *Handler) Handle() *chi.Mux {
 }
 
 func getOrCreateWeb3User(ent *ent.Client, address string) (*ent.Web3User, error) {
-	id, err := ent.Web3User.Create().SetAddress(address).OnConflict().Ignore().ID(context.Background())
+	id, err := ent.Web3User.
+		Create().
+		SetAddress(address).
+		OnConflictColumns(web3user.FieldAddress).
+		Ignore().
+		ID(context.Background())
 	if err != nil {
+		log.Logln(0, "Error creating web3user entry.")
 		return nil, err
 	}
 
