@@ -25,7 +25,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	web3OIDCHandler := web3oidc.NewHandler(hydraClient, db)
+	web3OIDCHandler := web3oidc.NewHandler(hydraClient, db, &cfg.Database)
 
 	log.Logf(0, "Listening on %q", cfg.Settings.URL)
 	log.Log(0, http.ListenAndServe(cfg.Settings.URL, web3OIDCHandler.Handle()))

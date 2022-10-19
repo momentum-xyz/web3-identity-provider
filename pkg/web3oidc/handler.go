@@ -12,6 +12,7 @@ import (
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/ent/web3challenge"
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/ent/web3user"
 
+	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/database"
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/xhttp"
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/xorm"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -28,8 +29,8 @@ import (
 
 const wallet_polkadot string = "polkadot"
 
-func NewHandler(hydra *client.OryHydra, db *sql.DB) *Handler {
-	ent := xorm.NewEnt(db)
+func NewHandler(hydra *client.OryHydra, db *sql.DB, cfg *database.Config) *Handler {
+	ent := xorm.NewEnt(db, cfg)
 
 	return &Handler{
 		hydra: hydra,

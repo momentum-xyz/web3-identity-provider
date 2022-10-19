@@ -6,11 +6,12 @@ import (
 
 	entsql "entgo.io/ent/dialect/sql"
 	"github.com/OdysseyMomentumExperience/web3-identity-provider/ent"
+	"github.com/OdysseyMomentumExperience/web3-identity-provider/pkg/database"
 	"github.com/pkg/errors"
 )
 
-func NewEnt(db *sql.DB) *ent.Client {
-	return ent.NewClient(ent.Driver(entsql.OpenDB("mysql", db)))
+func NewEnt(db *sql.DB, cfg *database.Config) *ent.Client {
+	return ent.NewClient(ent.Driver(entsql.OpenDB(cfg.Dialect, db)))
 }
 
 func WithTx(ctx context.Context, client *ent.Client, fn func(tx *ent.Tx) error) error {
